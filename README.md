@@ -45,7 +45,11 @@ nmp install
 ng build
 
 This command builds and copies the angular files into the 'src/main/resources/static' folder from the backend project
-Execute this command prior to starting the backend server.
+
+
+# Important
+
+Execute the 'ng build' command prior to starting the backend server with the 'mvn spring-boot:run' command
 
 
 # What happens when the backend server is started
