@@ -21,6 +21,10 @@ This project is setup with Spring Boot version 2.0.3-RELEASE
 
 ## Running the backend server
 
+Navigate to the main project folder ('TaskListApp-master') and open a CMD or Git Bash
+
+Execute the following command:
+
 mvn spring-boot:run
 
 
@@ -29,6 +33,10 @@ mvn spring-boot:run
 This project is setup with Angular 5
 
 ## Downloading and installing NPM packages
+
+Navigate to the 'frontend' folder inside the main project folder and open a CMD or Git Bash
+
+Execute the following command:
 
 nmp install
 
