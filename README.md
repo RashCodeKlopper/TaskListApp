@@ -40,15 +40,12 @@ Execute the following command:
 
 nmp install
 
-## Running the frontend project
-
-ng serve
-
 ## Buiding the frontend project
 
 ng build
 
-This build command builds and copies the angular files into the 'src/main/resources/static' folder from the backend project
+This command builds and copies the angular files into the 'src/main/resources/static' folder from the backend project
+Execute this command prior to starting the backend server.
 
 
 # What happens when the backend server is started
