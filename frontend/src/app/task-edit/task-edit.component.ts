@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { Task } from '../models/Task';
 import swal from 'sweetalert2';
 import { MatButtonModule, MatSnackBar } from '@angular/material';
 
@@ -12,6 +13,8 @@ import { MatButtonModule, MatSnackBar } from '@angular/material';
   styleUrls: ['./task-edit.component.css']
 })
 export class TaskEditComponent implements OnInit {
+
+  tasks: any;
 
   task = {};
 
@@ -27,6 +30,13 @@ export class TaskEditComponent implements OnInit {
     this.getTask(this.route.snapshot.params['id']);
   }
 
+  refreshTaskList() {
+    // Retrieve all Tasks
+    this.http.get('/tasks').subscribe(data => {
+      this.tasks = data as Task[];
+    });
+  }
+
   getTask(id) {
     this.http.get('/tasks/' + id).subscribe(data => {
       this.task = data;
@@ -36,8 +46,6 @@ export class TaskEditComponent implements OnInit {
   updateTask(id, data) {
     this.http.put('/tasks/' + id, data)
       .subscribe(res => {
-          // let id = res['id'];
-          this.router.navigate(['/tasks']);
           this.handleUpdate();
         }, (err) => {
           console.log(err);
@@ -46,6 +54,8 @@ export class TaskEditComponent implements OnInit {
   }
 
   handleUpdate() {
+    this.refreshTaskList();
+    this.router.navigate(['/tasks']);
     swal({
       type: 'success',
       title: 'Task updated',
@@ -57,8 +67,6 @@ export class TaskEditComponent implements OnInit {
   deleteTask(id) {
     this.http.delete('/tasks/' + id)
       .subscribe(res => {
-          // let id = res['id'];
-          this.router.navigate(['/tasks']);
           this.handleDelete();
         }, (err) => {
           console.log(err);
@@ -67,6 +75,8 @@ export class TaskEditComponent implements OnInit {
   }
 
   handleDelete() {
+    this.refreshTaskList();
+    this.router.navigate(['/tasks']);
     swal({
       type: 'success',
       title: 'Task deleted',

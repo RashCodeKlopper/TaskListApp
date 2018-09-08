@@ -19,10 +19,9 @@ import javax.persistence.Table;
 public class Task {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
-	@Column(name = "description")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)	// Please use GenerationType.IDENTITY when persisting to a MySQL db
+	private long id;									// Failure to do so will result in a 'hibernate_sequence' doesn't exist' error
+	@Column(name = "description")						// On databases like Postgres you can proceed to use GenerationType.AUTO
 	private String description;
 	
 	@Column(name = "status")

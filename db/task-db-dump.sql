@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `task` (
 
 INSERT INTO `task` (`id`, `description`, `status`) VALUES
 	(1, 'Buy some groceries from the store', 'TODO'),
-	(2, 'Gym session planned for roday. Be sure to bring along a towel and gatorade!', 'TODO'),
+	(2, 'Gym session planned for today. Be sure to bring along a towel and gatorade!', 'TODO'),
 	(3, 'Important meeting today @work. Be sure to wear a three piece suit!', 'DONE'),
 	(4, 'Build a Task List application with Java, Spring Boot, Angular v5 and MySQLdb', 'DONE');
 

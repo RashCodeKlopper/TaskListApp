@@ -1,12 +1,17 @@
 <div class="container">
 
   <h2>
-    <a [routerLink]="['/task-create']" class="btn btn-success">
-      <i class="fa fa-plus"></i>
-    </a>
+    <button type="button" (click)="showAddDialog()" class="waves-effect waves-light btn"
+      style="width: 100px ; padding-right: 20px">Add
+      <i class="fa fa-plus" aria-hidden="true" style="font-size: large ; float: left"></i>
+    </button>
+    <button type="button" (click)="deleteAllTasks()" class="waves-effect waves-light btn"
+      style="width: 150px ; padding-right: 20px">Delete All
+      <i class="fa fa-trash-o" aria-hidden="true" style="font-size: large ; float: right"></i>
+    </button>
   </h2>
 
-  <p-table #tasksTable [columns]="cols" [value]="tasks" [responsive]="true" [style]="{'width':'1000px'}">
+  <p-table #tasksTable [columns]="cols" [value]="tasks" [responsive]="true" [style]="{'width':'1100'}">
 
     <ng-template pTemplate="caption">
         <div class="ui-helper-clearfix">
@@ -24,20 +29,51 @@
 
     <ng-template pTemplate="body" let-task>
       <tr>
-        <td style="width: fit-content">{{ task.description }}</td>
-        <td style="width: fit-content">{{ task.status }}</td>
-        <td style="width: fit-content ; align-content: center">
-          <a [routerLink]="['/task-edit', task.id]">
+        <td style="width: 70% ; text-align: left">{{ task.description }}</td>
+        <td style="width: 10% ; text-align: center">{{ task.status }}</td>
+
+        <td style="width: 10% ; text-align: center">
+          <button type="button" (click)="editTask(task.id, task)" class="waves-effect waves-light btn"
+            style="width: 50px ; padding-right: 20px">
             <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
-          </a>
+          </button>
+          <!-- <a [routerLink]="['/task-edit', task.id]">
+            <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
+          </a> -->
         </td>
-        <td style="width: fit-content ; align-content: center">
-          <a [routerLink]="['/task-detail', task.id]">
+
+        <td style="width: 10% ; text-align: center">
+          <button type="button" (click)="deleteTask(task.id)" class="waves-effect waves-light btn"
+            style="width: 50px">
             <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
-          </a>
+          </button>
+          <!-- <a [routerLink]="['/task-detail', task.id]">
+            <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
+          </a> -->
         </td>
       </tr>
     </ng-template>
   </p-table>
+
+  <p-dialog header="Add Task" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+      <div class="ui-g ui-fluid">
+          <div class="ui-g-12">
+              <div class="ui-g-4">
+                  <label for="descr">Description</label>
+              </div>
+              <div class="ui-g-8">
+                  <textarea rows="5" cols="30" pInputTextarea autoResize="autoResize" id="descr" [(ngModel)]="task.description"></textarea>
+                </div>
+          </div>
+      </div>
+      <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" (click)="addTask(task)" class="waves-effect waves-light btn"
+              style="width: 110px ; padding-right: 20px">Save
+              <i class="fa fa-save" aria-hidden="true" style="font-size: large"></i>
+            </button>
+          </div>
+      </p-footer>
+  </p-dialog>
 
 </div>

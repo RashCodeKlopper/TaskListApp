@@ -229,6 +229,21 @@ var PageNotFoundComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/models/Task.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Task; });
+var Task = /** @class */ (function () {
+    function Task() {
+    }
+    return Task;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/task-create/task-create.component.css":
 /***/ (function(module, exports) {
 
@@ -339,7 +354,7 @@ module.exports = ""
 /***/ "./src/app/task-edit/task-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card-container\">\n\n    <div class=\"valign-wrapper row\">\n\n      <div class=\"card-panel hoverable\">\n\n        <div class=\"card border-primary mb-3\">\n\n          <div class=\"card-body text-secondary\">\n\n            <h2 class=\"card-title\">Edit Task</h2>\n\n            <div class=\"row\">\n                <form class=\"col s12\">\n                  <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                      <input type=\"text\" placeholder=\"Description\" id=\"description\" name=\"description\" [(ngModel)]=\"task.description\">\n                    </div>\n                  </div>\n                </form>\n            </div>\n\n            <div class=\"button-save\" style=\"float:right;\">\n              <button type=\"button\" (click)=\"updateTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n                      style=\"width: 170px ; padding-right: 20px\">Save\n                      <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n                      <!-- <i class=\"material-icons right\">save</i> -->\n              </button>\n              <button type=\"button\" (click)=\"deleteTask(task.id)\" class=\"waves-effect waves-light btn\"\n                      style=\"width: 170px\">Delete\n                      <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n                      <!-- <i class=\"material-icons right\">delete</i> -->\n              </button>\n            </div>\n\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; left: 24px; width: 55.5px\">\n              <a class=\"btn-floating btn-large waves-effect waves-light\" (click)=\"goBack()\">\n                <i class=\"fa fa-arrow-left\" aria-hidden=\"true\" style=\"font-size: larger\"></i>\n                <!-- <i class=\"large material-icons\">arrow_back</i> -->\n              </a>\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n"
+module.exports = "<div class=\"card-container\">\n\n    <div class=\"valign-wrapper row\">\n\n      <div class=\"card-panel hoverable\">\n\n        <div class=\"card border-primary mb-3\">\n\n          <div class=\"card-body text-secondary\">\n\n            <h2 class=\"card-title\">Edit Task</h2>\n\n            <div class=\"row\">\n                <form class=\"col s12\">\n                  <div class=\"row\">\n                    <div class=\"input-field col s12\">\n                      <input type=\"text\" placeholder=\"Description\" id=\"description\" name=\"description\" [(ngModel)]=\"task.description\">\n                    </div>\n                  </div>\n                </form>\n            </div>\n\n            <div class=\"button-save\" style=\"float:right;\">\n              <button type=\"button\" (click)=\"updateTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n                      style=\"width: 170px ; padding-right: 20px\">Save\n                      <i class=\"fa fa-save\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n              </button>\n              <button type=\"button\" (click)=\"deleteTask(task.id)\" class=\"waves-effect waves-light btn\"\n                      style=\"width: 170px\">Delete\n                      <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n              </button>\n            </div>\n\n            <div class=\"fixed-action-btn\" style=\"bottom: 45px; left: 24px; width: 55.5px\">\n              <a class=\"btn-floating btn-large waves-effect waves-light\" (click)=\"goBack()\">\n                <i class=\"fa fa-arrow-left\" aria-hidden=\"true\" style=\"font-size: larger\"></i>\n              </a>\n            </div>\n\n          </div>\n\n        </div>\n\n      </div>\n\n    </div>\n\n  </div>\n"
 
 /***/ }),
 
@@ -382,6 +397,13 @@ var TaskEditComponent = /** @class */ (function () {
     TaskEditComponent.prototype.ngOnInit = function () {
         this.getTask(this.route.snapshot.params['id']);
     };
+    TaskEditComponent.prototype.refreshTaskList = function () {
+        var _this = this;
+        // Retrieve all Tasks
+        this.http.get('/tasks').subscribe(function (data) {
+            _this.tasks = data;
+        });
+    };
     TaskEditComponent.prototype.getTask = function (id) {
         var _this = this;
         this.http.get('/tasks/' + id).subscribe(function (data) {
@@ -392,14 +414,14 @@ var TaskEditComponent = /** @class */ (function () {
         var _this = this;
         this.http.put('/tasks/' + id, data)
             .subscribe(function (res) {
-            // let id = res['id'];
-            _this.router.navigate(['/tasks']);
             _this.handleUpdate();
         }, function (err) {
             console.log(err);
         });
     };
     TaskEditComponent.prototype.handleUpdate = function () {
+        this.refreshTaskList();
+        this.router.navigate(['/tasks']);
         __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
             type: 'success',
             title: 'Task updated',
@@ -411,14 +433,14 @@ var TaskEditComponent = /** @class */ (function () {
         var _this = this;
         this.http.delete('/tasks/' + id)
             .subscribe(function (res) {
-            // let id = res['id'];
-            _this.router.navigate(['/tasks']);
             _this.handleDelete();
         }, function (err) {
             console.log(err);
         });
     };
     TaskEditComponent.prototype.handleDelete = function () {
+        this.refreshTaskList();
+        this.router.navigate(['/tasks']);
         __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
             type: 'success',
             title: 'Task deleted',
@@ -458,7 +480,7 @@ module.exports = ""
 /***/ "./src/app/task-list/task-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n\n  <h2>\n    <a [routerLink]=\"['/task-create']\" class=\"btn btn-success\">\n      <i class=\"fa fa-plus\"></i>\n    </a>\n  </h2>\n\n  <p-table #tasksTable [columns]=\"cols\" [value]=\"tasks\" [responsive]=\"true\" [style]=\"{'width':'1000px'}\">\n\n    <ng-template pTemplate=\"caption\">\n        <div class=\"ui-helper-clearfix\">\n          <button type=\"button\" pButton icon=\"fa fa-file-o\" iconPos=\"left\" label=\"Export Data\" (click)=\"tasksTable.exportCSV()\" style=\"float:right\"></button>\n        </div>\n    </ng-template>\n\n    <ng-template pTemplate=\"header\" let-columns>\n        <tr>\n            <th *ngFor=\"let col of columns\">\n                {{col.header}}\n            </th>\n        </tr>\n    </ng-template>\n\n    <ng-template pTemplate=\"body\" let-task>\n      <tr>\n        <td style=\"width: fit-content\">{{ task.description }}</td>\n        <td style=\"width: fit-content\">{{ task.status }}</td>\n        <td style=\"width: fit-content ; align-content: center\">\n          <a [routerLink]=\"['/task-edit', task.id]\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a>\n        </td>\n        <td style=\"width: fit-content ; align-content: center\">\n          <a [routerLink]=\"['/task-detail', task.id]\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a>\n        </td>\n      </tr>\n    </ng-template>\n  </p-table>\n\n</div>\n"
+module.exports = "<div class=\"container\">\n\n  <h2>\n    <button type=\"button\" (click)=\"showAddDialog()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 100px ; padding-right: 20px\">Add\n      <i class=\"fa fa-plus\" aria-hidden=\"true\" style=\"font-size: large ; float: left\"></i>\n    </button>\n    <button type=\"button\" (click)=\"deleteAllTasks()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 150px ; padding-right: 20px\">Delete All\n      <i class=\"fa fa-trash-o\" aria-hidden=\"true\" style=\"font-size: large ; float: right\"></i>\n    </button>\n  </h2>\n\n  <p-table #tasksTable [columns]=\"cols\" [value]=\"tasks\" [responsive]=\"true\" [style]=\"{'width':'1100'}\">\n\n    <ng-template pTemplate=\"caption\">\n        <div class=\"ui-helper-clearfix\">\n          <button type=\"button\" pButton icon=\"fa fa-file-o\" iconPos=\"left\" label=\"Export Data\" (click)=\"tasksTable.exportCSV()\" style=\"float:right\"></button>\n        </div>\n    </ng-template>\n\n    <ng-template pTemplate=\"header\" let-columns>\n        <tr>\n            <th *ngFor=\"let col of columns\">\n                {{col.header}}\n            </th>\n        </tr>\n    </ng-template>\n\n    <ng-template pTemplate=\"body\" let-task>\n      <tr>\n        <td style=\"width: 70% ; text-align: left\">{{ task.description }}</td>\n        <td style=\"width: 10% ; text-align: center\">{{ task.status }}</td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"editTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px ; padding-right: 20px\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n          <!-- <a [routerLink]=\"['/task-edit', task.id]\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a> -->\n        </td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"deleteTask(task.id)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n          <!-- <a [routerLink]=\"['/task-detail', task.id]\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a> -->\n        </td>\n      </tr>\n    </ng-template>\n  </p-table>\n\n  <p-dialog header=\"Add Task\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\" [width]=\"450\">\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-12\">\n              <div class=\"ui-g-4\">\n                  <label for=\"descr\">Description</label>\n              </div>\n              <div class=\"ui-g-8\">\n                  <textarea rows=\"5\" cols=\"30\" pInputTextarea autoResize=\"autoResize\" id=\"descr\" [(ngModel)]=\"task.description\"></textarea>\n                </div>\n          </div>\n      </div>\n      <p-footer>\n          <div class=\"ui-dialog-buttonpane ui-helper-clearfix\">\n            <button type=\"button\" (click)=\"addTask(task)\" class=\"waves-effect waves-light btn\"\n              style=\"width: 110px ; padding-right: 20px\">Save\n              <i class=\"fa fa-save\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n            </button>\n          </div>\n      </p-footer>\n  </p-dialog>\n\n</div>\n"
 
 /***/ }),
 
@@ -470,9 +492,10 @@ module.exports = "<div class=\"container\">\n\n  <h2>\n    <a [routerLink]=\"['/
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_sweetalert2__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_material__ = __webpack_require__("./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_Task__ = __webpack_require__("./src/app/models/Task.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2__ = __webpack_require__("./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_sweetalert2__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -487,51 +510,95 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var TaskListComponent = /** @class */ (function () {
     function TaskListComponent(http, router, snacker) {
         this.http = http;
         this.router = router;
         this.snacker = snacker;
+        this.task = {};
+        this.statusVal = 'TODO';
     }
     TaskListComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        // Retrieve Tasks
-        this.http.get('/tasks').subscribe(function (data) {
-            _this.tasks = data;
-        });
+        this.refreshTaskList();
         // Define table column names
         this.cols = [
             { field: 'description', header: 'Description' },
             { field: 'status', header: 'Status' },
+            { field: '', header: 'Edit' },
+            { field: '', header: 'Delete' },
         ];
     };
-    TaskListComponent.prototype.addTask = function () {
-        this.router.navigate(['/task-create']);
+    TaskListComponent.prototype.refreshTaskList = function () {
+        var _this = this;
+        // Retrieve all Tasks
+        this.http.get('/tasks').subscribe(function (data) {
+            _this.tasks = data;
+        });
+    };
+    TaskListComponent.prototype.showAddDialog = function () {
+        this.displayDialog = true;
+        this.task = new __WEBPACK_IMPORTED_MODULE_3__models_Task__["a" /* Task */]();
+    };
+    TaskListComponent.prototype.addTask = function (task) {
+        var _this = this;
+        // Add default value for status
+        task.status = this.statusVal;
+        this.http.post('/tasks/add', task)
+            .subscribe(function (res) {
+            _this.displayDialog = false;
+            _this.handleAdd();
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    TaskListComponent.prototype.handleAdd = function () {
+        this.refreshTaskList();
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'Task added',
+            confirmButtonText: 'OK'
+        });
+        this.snacker.open('Task added', 'Success', { duration: 3000 });
     };
     TaskListComponent.prototype.editTask = function (taskId, task) {
         this.router.navigate(['/task-edit', taskId, task]);
-    };
-    TaskListComponent.prototype.removeTask = function (taskId) {
-        this.deleteTask(taskId);
     };
     TaskListComponent.prototype.deleteTask = function (id) {
         var _this = this;
         this.http.delete('/tasks/' + id)
             .subscribe(function (res) {
-            // let id = res['id'];
-            _this.router.navigate(['/tasks']);
             _this.handleDelete();
         }, function (err) {
             console.log(err);
         });
     };
     TaskListComponent.prototype.handleDelete = function () {
-        __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default()({
+        this.refreshTaskList();
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
             type: 'success',
             title: 'Task deleted',
             confirmButtonText: 'OK'
         });
         this.snacker.open('Task deleted', 'Success', { duration: 3000 });
+    };
+    TaskListComponent.prototype.deleteAllTasks = function () {
+        var _this = this;
+        this.http.delete('/tasks/delete')
+            .subscribe(function (res) {
+            _this.handleDeleteAll();
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    TaskListComponent.prototype.handleDeleteAll = function () {
+        this.refreshTaskList();
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'All Tasks deleted',
+            confirmButtonText: 'OK'
+        });
+        this.snacker.open('All Tasks deleted', 'Success', { duration: 3000 });
     };
     TaskListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -541,7 +608,7 @@ var TaskListComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */],
             __WEBPACK_IMPORTED_MODULE_2__angular_router__["Router"],
-            __WEBPACK_IMPORTED_MODULE_4__angular_material__["b" /* MatSnackBar */]])
+            __WEBPACK_IMPORTED_MODULE_5__angular_material__["b" /* MatSnackBar */]])
     ], TaskListComponent);
     return TaskListComponent;
 }());

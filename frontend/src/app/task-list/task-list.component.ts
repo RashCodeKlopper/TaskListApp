@@ -24,37 +24,69 @@ export class TaskListComponent implements OnInit {
   // variable to hold the frontend table column names
   cols: any[];
 
+  task: any = {};
+
+  displayDialog: boolean;
+
+  statusVal: String = 'TODO';
+
   ngOnInit() {
 
-    // Retrieve Tasks
-    this.http.get('/tasks').subscribe(data => {
-      this.tasks = data as Task[];
-    });
+    this.refreshTaskList();
 
     // Define table column names
     this.cols = [
       { field: 'description', header: 'Description' },
       { field: 'status', header: 'Status' },
+      { field: '', header: 'Edit' },
+      { field: '', header: 'Delete' },
     ];
   }
 
-  addTask() {
-    this.router.navigate(['/task-create']);
+  refreshTaskList() {
+    // Retrieve all Tasks
+    this.http.get('/tasks').subscribe(data => {
+      this.tasks = data as Task[];
+    });
+  }
+
+  showAddDialog() {
+    this.displayDialog = true;
+    this.task = new Task();
+  }
+
+  addTask(task) {
+
+    // Add default value for status
+    task.status = this.statusVal;
+
+    this.http.post('/tasks/add', task)
+      .subscribe(res => {
+        this.displayDialog = false;
+        this.handleAdd();
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  handleAdd() {
+    this.refreshTaskList();
+    swal({
+      type: 'success',
+      title: 'Task added',
+      confirmButtonText: 'OK'
+    });
+    this.snacker.open('Task added', 'Success', { duration: 3000 });
   }
 
   editTask(taskId, task) {
     this.router.navigate(['/task-edit', taskId, task]);
   }
 
-  removeTask(taskId) {
-    this.deleteTask(taskId);
-  }
-
   deleteTask(id) {
     this.http.delete('/tasks/' + id)
       .subscribe(res => {
-          // let id = res['id'];
-          this.router.navigate(['/tasks']);
           this.handleDelete();
         }, (err) => {
           console.log(err);
@@ -63,12 +95,33 @@ export class TaskListComponent implements OnInit {
   }
 
   handleDelete() {
+    this.refreshTaskList();
     swal({
       type: 'success',
       title: 'Task deleted',
       confirmButtonText: 'OK'
     });
     this.snacker.open('Task deleted', 'Success', { duration: 3000 });
+  }
+
+  deleteAllTasks() {
+    this.http.delete('/tasks/delete')
+    .subscribe(res => {
+        this.handleDeleteAll();
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  handleDeleteAll() {
+    this.refreshTaskList();
+    swal({
+      type: 'success',
+      title: 'All Tasks deleted',
+      confirmButtonText: 'OK'
+    });
+    this.snacker.open('All Tasks deleted', 'Success', { duration: 3000 });
   }
 
 }
