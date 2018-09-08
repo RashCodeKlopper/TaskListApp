@@ -21,10 +21,7 @@ public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	@Column(name = "title")
-	private String title;
-	
+
 	@Column(name = "description")
 	private String description;
 	
@@ -35,9 +32,8 @@ public class Task {
 		super();
 	}
 
-	public Task(String title, String description, String status) {
+	public Task(String description, String status) {
 		super();
-		this.title = title;
 		this.description = description;
 		this.status = status;
 	}
@@ -48,14 +44,6 @@ public class Task {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getDescription() {
@@ -76,7 +64,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + "\ntitle=" + title + "\ndescription=" + description + "\nstatus=" + status + "]";
+		return "Task [id=" + id + "\ndescription=" + description + "\nstatus=" + status + "]";
 	}
 	
 }

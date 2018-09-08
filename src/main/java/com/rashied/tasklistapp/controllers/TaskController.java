@@ -83,7 +83,6 @@ public class TaskController {
  
 		if (taskData.isPresent()) {
 			Task _task = taskData.get();
-			_task.setTitle(task.getTitle());
 			_task.setDescription(task.getDescription());
 			_task.setStatus(task.getStatus());
 			return new ResponseEntity<>(taskService.updateTask(_task), HttpStatus.OK);

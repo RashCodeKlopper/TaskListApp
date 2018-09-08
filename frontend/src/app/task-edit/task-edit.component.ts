@@ -20,9 +20,9 @@ export class TaskEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private snacker: MatSnackBar,
+    private snacker: MatSnackBar
   ) { }
-  
+
   ngOnInit() {
     this.getTask(this.route.snapshot.params['id']);
   }
@@ -36,7 +36,7 @@ export class TaskEditComponent implements OnInit {
   updateTask(id, data) {
     this.http.put('/tasks/' + id, data)
       .subscribe(res => {
-          //let id = res['id'];
+          // let id = res['id'];
           this.router.navigate(['/tasks']);
           this.handleUpdate();
         }, (err) => {
@@ -48,18 +48,16 @@ export class TaskEditComponent implements OnInit {
   handleUpdate() {
     swal({
       type: 'success',
-      title: 'Task has been updated',
+      title: 'Task updated',
       confirmButtonText: 'OK'
     });
-
-    this.snacker.open('Task has been updated', 'Success', { duration: 3000 });
-
+    this.snacker.open('Task updated', 'Success', { duration: 3000 });
   }
 
   deleteTask(id) {
     this.http.delete('/tasks/' + id)
       .subscribe(res => {
-          //let id = res['id'];
+          // let id = res['id'];
           this.router.navigate(['/tasks']);
           this.handleDelete();
         }, (err) => {
@@ -67,16 +65,14 @@ export class TaskEditComponent implements OnInit {
         }
       );
   }
-  
+
   handleDelete() {
     swal({
       type: 'success',
-      title: 'Task has been deleted',
+      title: 'Task deleted',
       confirmButtonText: 'OK'
     });
-
-    this.snacker.open('Task has been deleted', 'Success', { duration: 3000 });
-
+    this.snacker.open('Task deleted', 'Success', { duration: 3000 });
   }
 
   goBack() {

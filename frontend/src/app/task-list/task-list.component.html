@@ -6,26 +6,12 @@
     </a>
   </h2>
 
-  <p-table #tasksTable [columns]="cols" [value]="tasks" [rows]="15" [paginator]="true" [responsive]="true" 
-    class="table table-hover table-mc-blue bordered highlight" [style]="{'width':'1000px'}">
+  <p-table #tasksTable [columns]="cols" [value]="tasks" [responsive]="true" [style]="{'width':'1000px'}">
 
     <ng-template pTemplate="caption">
-
         <div class="ui-helper-clearfix">
-        
           <button type="button" pButton icon="fa fa-file-o" iconPos="left" label="Export Data" (click)="tasksTable.exportCSV()" style="float:right"></button>
-        
-          <!-- <a [routerLink]="['/task-create']" class="btn btn-success" style="float:right">
-            <i class="fa fa-plus"></i>
-          </a> -->
-        
         </div>
-
-      <!-- <div style="text-align: left">
-        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-        <input type="text" pInputText size="50" placeholder="Filter records" (input)="tasksTable.filterGlobal($event.target.value, 'contains')"
-          style="width:auto">
-      </div> -->
     </ng-template>
 
     <ng-template pTemplate="header" let-columns>
@@ -38,17 +24,16 @@
 
     <ng-template pTemplate="body" let-task>
       <tr>
-        <td style="width:250px">{{ task.title }}</td>
-        <td style="width:650px">{{ task.description }}</td>
-        <td style="width:50px">{{ task.status }}</td>
-        <td>
+        <td style="width: fit-content">{{ task.description }}</td>
+        <td style="width: fit-content">{{ task.status }}</td>
+        <td style="width: fit-content ; align-content: center">
           <a [routerLink]="['/task-edit', task.id]">
-            <i class="fa fa-edit" aria-hidden="true"></i>
+            <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
           </a>
         </td>
-        <td>
+        <td style="width: fit-content ; align-content: center">
           <a [routerLink]="['/task-detail', task.id]">
-            <i class="fa fa-delete" aria-hidden="true"></i>
+            <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
           </a>
         </td>
       </tr>
