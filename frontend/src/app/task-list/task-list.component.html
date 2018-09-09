@@ -58,8 +58,10 @@
     </ng-template>
 
     <ng-template pTemplate="summary">
-        <div style="text-align: left">
+        <div *ngIf="tasks !== undefined" style="text-align: left">
+          <strong>
             There are {{tasks.length}} tasks left
+          </strong>
         </div>
     </ng-template>
 

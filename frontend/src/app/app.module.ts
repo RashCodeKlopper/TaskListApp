@@ -94,7 +94,8 @@ const appRoutes: Routes = [
 
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false } // <-- set true for debugging purposes only
+      { enableTracing: false,  // <-- set true for debugging purposes only
+        useHash: true  }
     )
 
   ],

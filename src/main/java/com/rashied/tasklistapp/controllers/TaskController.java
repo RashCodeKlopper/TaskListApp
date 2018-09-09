@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rashied.tasklistapp.enums.TaskStatus;
 import com.rashied.tasklistapp.models.Task;
 import com.rashied.tasklistapp.services.TaskService;
+
 
 
 /**
@@ -112,23 +115,39 @@ public class TaskController {
 	}
 	
 	@DeleteMapping("/tasks/{id}")
-	public ResponseEntity<String> deleteTask(@PathVariable("id") long id) {
+	public ResponseEntity<JSONObject> deleteTask(@PathVariable("id") long id) {
 		
 		System.out.println("Delete Task with ID = " + id + "...");
  
 		taskService.deleteTaskById(id);
  
-		return new ResponseEntity<>("Task has been deleted!", HttpStatus.OK);
+		JSONObject jsonObj = new JSONObject();
+		try {
+			jsonObj.put("message", "Task has been deleted!");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 
+		return new ResponseEntity<JSONObject>(jsonObj, HttpStatus.OK);
 	}    
 
 	@DeleteMapping("/tasks/delete")
-	public ResponseEntity<String> deleteAllTasks() {
+	public ResponseEntity<JSONObject> deleteAllTasks() {
 		
 		System.out.println("Deleting All Tasks...");
  
 		taskService.deleteAllTasks();
 		
-		return new ResponseEntity<>("All Tasks have been deleted!", HttpStatus.OK);
+		JSONObject jsonObj = new JSONObject();
+		try {
+			jsonObj.put("message", "All Tasks have been deleted!");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<JSONObject>(jsonObj, HttpStatus.OK);
 	}
     
 }
