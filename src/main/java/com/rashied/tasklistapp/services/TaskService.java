@@ -3,6 +3,8 @@
  */
 package com.rashied.tasklistapp.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +23,20 @@ public class TaskService {
 	@Autowired
     private TaskRepository taskRepository;
 
-    public Iterable<Task> findAllTasks() {
-        Iterable<Task> tasks;
-        tasks = taskRepository.findAll();
-        return tasks;
+    public List<Task> findAllTasks() {
+        
+        Iterable<Task> tasksIterable = taskRepository.findAll();
+        
+    	// Convert Iterable to ArrayList
+    	List<Task> taskList = new ArrayList<>();
+    	
+    	// Lambda expression
+    	tasksIterable.forEach(item -> taskList.add(item));
+    	
+    	// Method reference
+    	// taskRepository.findAll().forEach(taskList::add);
+        
+        return taskList;
     }
 
     public Optional<Task> getTaskById(Long id) {

@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.rashied.tasklistapp.controllers.TaskController;
+import com.rashied.tasklistapp.enums.TaskStatus;
 import com.rashied.tasklistapp.models.Task;
 /**
  * @author rashied
@@ -34,16 +35,17 @@ import com.rashied.tasklistapp.models.Task;
 public class TaskControllerMockTest {
 
    @Autowired
-   private MockMvc mvc;
+   private MockMvc mockMvc;
 
    @MockBean
    private TaskController taskController;
 
    @Test
-   public void getTasks() throws Exception {
+   public void getTasksTest() throws Exception {
 	   
 	   Task task = new Task();
 	   task.setDescription("description 1");
+	   task.setStatus(TaskStatus.TODO.toString());
 	   
 	   // Create an ArrayList containing 1 Task object
 	   ArrayList<Task> allTasks = Stream
@@ -52,25 +54,12 @@ public class TaskControllerMockTest {
 	   
        given(taskController.getAllTasks()).willReturn(allTasks);
 
-       mvc.perform(get("/tasks")
+       mockMvc.perform(get("/tasks")
                .contentType(APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(jsonPath("$", hasSize(1)))
-               .andExpect(jsonPath("$[0].description", is(task.getDescription())));
-   }
-   
-   @Test
-   public void getTasksById() throws Exception {
-	   
-	   Task task = new Task();
-	   task.setDescription("description 2");
-
-       given(taskController.findTaskById((task.getId()))).willReturn(task);
-
-       mvc.perform(get("/tasks/" + task.getId())
-               .contentType(APPLICATION_JSON))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("description", is(task.getDescription())));
+               .andExpect(jsonPath("$[0].description", is(task.getDescription())))
+       		   .andExpect(jsonPath("$[0].status", is(task.getStatus())));
    }
    
 }

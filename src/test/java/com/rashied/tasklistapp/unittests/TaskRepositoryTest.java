@@ -3,6 +3,12 @@
  */
 package com.rashied.tasklistapp.unittests;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +22,6 @@ import com.rashied.tasklistapp.enums.TaskStatus;
 import com.rashied.tasklistapp.models.Task;
 import com.rashied.tasklistapp.repositories.TaskRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
-
 /**
  * @author rashied
  *
@@ -30,7 +31,7 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
 public class TaskRepositoryTest {
-
+	
 	@Autowired
 	private TestEntityManager entityManager;
 
@@ -38,7 +39,7 @@ public class TaskRepositoryTest {
 	private TaskRepository taskRepository;
 
 	@Test
-	public void whenFindAll() {
+	public void findAllTest() {
 
 		// given
 		Task firstTask = new Task();
@@ -66,9 +67,12 @@ public class TaskRepositoryTest {
 		List<Task> foundTasks = taskList;
 
 		// then
-		assertThat(foundTasks.size()).isEqualTo(2);
-		//assertThat(foundTasks.get(7)).isEqualTo(firstTask);
-		//assertThat(foundTasks.get(8)).isEqualTo(secondTask);
+		// Assert by list size 
+		// Warning: table 'task' must contain 6 records already => please execute the provided .sql file from /db folder
+		assertThat(foundTasks.size()).isEqualTo(8);
+		// Assert by index number
+		assertThat(foundTasks.get(6)).isEqualTo(firstTask);
+		assertThat(foundTasks.get(7)).isEqualTo(secondTask);
 	}
-
+	
 }

@@ -3,7 +3,6 @@
  */
 package com.rashied.tasklistapp.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +23,6 @@ import com.rashied.tasklistapp.enums.TaskStatus;
 import com.rashied.tasklistapp.models.Task;
 import com.rashied.tasklistapp.services.TaskService;
 
-
-
 /**
  * @author rashied
  *
@@ -41,13 +38,7 @@ public class TaskController {
     	
     	System.out.println("Getting all Tasks...");
     	
-    	List<Task> taskList = new ArrayList<>();
-    	
-    	// Lambda expression
-    	taskService.findAllTasks().forEach(item -> taskList.add(item));
-    	
-    	// Method reference
-    	// taskService.findAllTasks().forEach(taskList::add);
+    	List<Task> taskList = taskService.findAllTasks();
     	
         return taskList;
     }
@@ -86,7 +77,9 @@ public class TaskController {
 			Task _task = taskData.get();
 			_task.setDescription(task.getDescription());
 			_task.setStatus(task.getStatus());
+			
 			return new ResponseEntity<>(taskService.updateTask(_task), HttpStatus.OK);
+			
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -122,10 +115,12 @@ public class TaskController {
 		taskService.deleteTaskById(id);
  
 		JSONObject jsonObj = new JSONObject();
+		
 		try {
+			
 			jsonObj.put("message", "Task has been deleted!");
+			
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
  
@@ -140,10 +135,12 @@ public class TaskController {
 		taskService.deleteAllTasks();
 		
 		JSONObject jsonObj = new JSONObject();
+		
 		try {
+			
 			jsonObj.put("message", "All Tasks have been deleted!");
+			
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
