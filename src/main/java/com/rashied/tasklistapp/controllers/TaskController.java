@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rashied.tasklistapp.enums.TaskStatus;
 import com.rashied.tasklistapp.models.Task;
 import com.rashied.tasklistapp.services.TaskService;
 
@@ -33,13 +34,17 @@ public class TaskController {
     private TaskService taskService;
 
     @RequestMapping(method=RequestMethod.GET, value="/tasks")
-    //public Iterable<Task> getAllTasks() {
     public List<Task> getAllTasks() {
     	
     	System.out.println("Getting all Tasks...");
     	
     	List<Task> taskList = new ArrayList<>();
-    	taskService.findAllTasks().forEach(taskList::add);
+    	
+    	// Lambda expression
+    	taskService.findAllTasks().forEach(item -> taskList.add(item));
+    	
+    	// Method reference
+    	// taskService.findAllTasks().forEach(taskList::add);
     	
         return taskList;
     }
@@ -59,20 +64,13 @@ public class TaskController {
     	
     	System.out.println("Adding Task...");
     	
+    	// Every new task contains status 'TODO'
+    	task.setStatus(TaskStatus.TODO.toString());
+    	
     	taskService.saveTask(task);
     	
     	return task;
     }
-
-//    @RequestMapping(method=RequestMethod.PUT, value="/tasks/{id}")
-//    public Task updateTask(@PathVariable long id, @RequestBody Task task) {
-//    	
-//    	System.out.println("Update Task with ID = " + id + "...");
-//    	
-//    	taskService.updateTask(task);
-//    	
-//        return task;
-//    }
     
 	@PutMapping("/tasks/{id}")
 	public ResponseEntity<Task> updateTask(@PathVariable("id") long id, @RequestBody Task task) {
@@ -91,6 +89,28 @@ public class TaskController {
 		}
 	}
     
+	@PutMapping("/tasks/complete/{id}")
+	public void completeTask(@PathVariable("id") long id, @RequestBody Task task) {
+		
+		System.out.println("Complete Task with ID = " + id + "...");
+ 
+		Optional<Task> taskData = taskService.getTaskById(id);
+ 
+		if (taskData.isPresent()) {
+			
+			Task _task = taskData.get();
+			_task.setDescription(task.getDescription());
+			_task.setStatus(TaskStatus.DONE.toString());
+			
+			taskService.completeTask(_task);
+			
+			System.out.println("Completing task response: " + HttpStatus.OK);
+			
+		} else {
+			System.out.println("Completing task response: " + HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	@DeleteMapping("/tasks/{id}")
 	public ResponseEntity<String> deleteTask(@PathVariable("id") long id) {
 		
@@ -100,11 +120,6 @@ public class TaskController {
  
 		return new ResponseEntity<>("Task has been deleted!", HttpStatus.OK);
 	}    
-    
-//    //@RequestMapping(method=RequestMethod.DELETE, value="/contacts/{id}")
-//    	public void deleteAllTasks(@PathVariable String id) {
-//        contactService.deleteContact(id);
-//    }
 
 	@DeleteMapping("/tasks/delete")
 	public ResponseEntity<String> deleteAllTasks() {

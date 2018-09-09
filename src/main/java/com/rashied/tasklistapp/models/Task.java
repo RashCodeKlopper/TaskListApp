@@ -63,7 +63,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [id=" + id + "\ndescription=" + description + "\nstatus=" + status + "]";
+		return "Task [id=" + id + "description=" + description + "status=" + status + "]";
 	}
 	
 }

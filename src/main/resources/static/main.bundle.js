@@ -480,7 +480,7 @@ module.exports = ""
 /***/ "./src/app/task-list/task-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n\n  <h2>\n    <button type=\"button\" (click)=\"showAddDialog()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 100px ; padding-right: 20px\">Add\n      <i class=\"fa fa-plus\" aria-hidden=\"true\" style=\"font-size: large ; float: left\"></i>\n    </button>\n    <button type=\"button\" (click)=\"deleteAllTasks()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 150px ; padding-right: 20px\">Delete All\n      <i class=\"fa fa-trash-o\" aria-hidden=\"true\" style=\"font-size: large ; float: right\"></i>\n    </button>\n  </h2>\n\n  <p-table #tasksTable [columns]=\"cols\" [value]=\"tasks\" [responsive]=\"true\" [style]=\"{'width':'1100'}\">\n\n    <ng-template pTemplate=\"caption\">\n        <div class=\"ui-helper-clearfix\">\n          <button type=\"button\" pButton icon=\"fa fa-file-o\" iconPos=\"left\" label=\"Export Data\" (click)=\"tasksTable.exportCSV()\" style=\"float:right\"></button>\n        </div>\n    </ng-template>\n\n    <ng-template pTemplate=\"header\" let-columns>\n        <tr>\n            <th *ngFor=\"let col of columns\">\n                {{col.header}}\n            </th>\n        </tr>\n    </ng-template>\n\n    <ng-template pTemplate=\"body\" let-task>\n      <tr>\n        <td style=\"width: 70% ; text-align: left\">{{ task.description }}</td>\n        <td style=\"width: 10% ; text-align: center\">{{ task.status }}</td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"editTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px ; padding-right: 20px\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n          <!-- <a [routerLink]=\"['/task-edit', task.id]\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a> -->\n        </td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"deleteTask(task.id)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n          <!-- <a [routerLink]=\"['/task-detail', task.id]\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </a> -->\n        </td>\n      </tr>\n    </ng-template>\n  </p-table>\n\n  <p-dialog header=\"Add Task\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\" [width]=\"450\">\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-12\">\n              <div class=\"ui-g-4\">\n                  <label for=\"descr\">Description</label>\n              </div>\n              <div class=\"ui-g-8\">\n                  <textarea rows=\"5\" cols=\"30\" pInputTextarea autoResize=\"autoResize\" id=\"descr\" [(ngModel)]=\"task.description\"></textarea>\n                </div>\n          </div>\n      </div>\n      <p-footer>\n          <div class=\"ui-dialog-buttonpane ui-helper-clearfix\">\n            <button type=\"button\" (click)=\"addTask(task)\" class=\"waves-effect waves-light btn\"\n              style=\"width: 110px ; padding-right: 20px\">Save\n              <i class=\"fa fa-save\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n            </button>\n          </div>\n      </p-footer>\n  </p-dialog>\n\n</div>\n"
+module.exports = "<div class=\"container\">\n\n  <h2>\n    <button type=\"button\" (click)=\"showAddDialog()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 100px ; padding-right: 20px\">Add\n      <i class=\"fa fa-plus\" aria-hidden=\"true\" style=\"font-size: large ; float: left\"></i>\n    </button>\n    <button type=\"button\" (click)=\"deleteAllTasks()\" class=\"waves-effect waves-light btn\"\n      style=\"width: 150px ; padding-right: 20px\">Delete All\n      <i class=\"fa fa-trash-o\" aria-hidden=\"true\" style=\"font-size: large ; float: right\"></i>\n    </button>\n  </h2>\n\n  <p-table #tasksTable [columns]=\"cols\" [value]=\"tasks\" [responsive]=\"true\" [style]=\"{'width':'1100'}\">\n\n    <ng-template pTemplate=\"caption\">\n        <div class=\"ui-helper-clearfix\">\n          <button type=\"button\" pButton icon=\"fa fa-file-o\" iconPos=\"left\" label=\"Export Data\" (click)=\"tasksTable.exportCSV()\" style=\"float:right\"></button>\n        </div>\n    </ng-template>\n\n    <ng-template pTemplate=\"header\" let-columns style=\"align-content: center\">\n        <tr>\n            <th *ngFor=\"let col of columns\">\n                {{col.header}}\n            </th>\n        </tr>\n    </ng-template>\n\n    <ng-template pTemplate=\"body\" let-task>\n\n      <tr>\n\n        <td style=\"width: 10% ; text-align: center\">\n            <button type=\"button\" (click)=\"completeTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n              style=\"width: 50px\">\n              <i class=\"fa fa-check\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n            </button>\n          </td>\n\n        <td style=\"width: 70% ; text-align: left\">{{ task.description }}</td>\n        <td style=\"width: 10% ; text-align: center\">{{ task.status }}</td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"editTask(task.id, task)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px\">\n            <i class=\"fa fa-edit\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n        </td>\n\n        <td style=\"width: 10% ; text-align: center\">\n          <button type=\"button\" (click)=\"deleteTask(task.id)\" class=\"waves-effect waves-light btn\"\n            style=\"width: 50px\">\n            <i class=\"fa fa-trash\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n          </button>\n        </td>\n      </tr>\n    </ng-template>\n\n    <ng-template pTemplate=\"summary\">\n        <div style=\"text-align: left\">\n            There are {{tasks.length}} tasks left\n        </div>\n    </ng-template>\n\n  </p-table>\n\n  <p-dialog header=\"Add Task\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\" [width]=\"450\">\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-12\">\n              <div class=\"ui-g-4\">\n                  <label for=\"descr\">Description</label>\n              </div>\n              <div class=\"ui-g-8\">\n                  <textarea rows=\"5\" cols=\"30\" pInputTextarea autoResize=\"autoResize\" id=\"descr\" [(ngModel)]=\"task.description\"></textarea>\n                </div>\n          </div>\n      </div>\n      <p-footer>\n          <div class=\"ui-dialog-buttonpane ui-helper-clearfix\">\n            <button type=\"button\" (click)=\"addTask(task)\" class=\"waves-effect waves-light btn\"\n              style=\"width: 110px ; padding-right: 20px\">Save\n              <i class=\"fa fa-save\" aria-hidden=\"true\" style=\"font-size: large\"></i>\n            </button>\n          </div>\n      </p-footer>\n  </p-dialog>\n\n</div>\n"
 
 /***/ }),
 
@@ -517,16 +517,16 @@ var TaskListComponent = /** @class */ (function () {
         this.router = router;
         this.snacker = snacker;
         this.task = {};
-        this.statusVal = 'TODO';
     }
     TaskListComponent.prototype.ngOnInit = function () {
         this.refreshTaskList();
         // Define table column names
         this.cols = [
+            { field: '', header: 'Do Task' },
             { field: 'description', header: 'Description' },
             { field: 'status', header: 'Status' },
-            { field: '', header: 'Edit' },
-            { field: '', header: 'Delete' },
+            { field: '', header: 'Edit Task' },
+            { field: '', header: 'Delete Task' },
         ];
     };
     TaskListComponent.prototype.refreshTaskList = function () {
@@ -541,9 +541,9 @@ var TaskListComponent = /** @class */ (function () {
         this.task = new __WEBPACK_IMPORTED_MODULE_3__models_Task__["a" /* Task */]();
     };
     TaskListComponent.prototype.addTask = function (task) {
-        var _this = this;
         // Add default value for status
-        task.status = this.statusVal;
+        // task.status = this.statusVal;
+        var _this = this;
         this.http.post('/tasks/add', task)
             .subscribe(function (res) {
             _this.displayDialog = false;
@@ -599,6 +599,24 @@ var TaskListComponent = /** @class */ (function () {
             confirmButtonText: 'OK'
         });
         this.snacker.open('All Tasks deleted', 'Success', { duration: 3000 });
+    };
+    TaskListComponent.prototype.completeTask = function (id, task) {
+        var _this = this;
+        this.http.put('/tasks/complete/' + id, task)
+            .subscribe(function (res) {
+            _this.handleCompleteTask();
+        }, function (err) {
+            console.log(err);
+        });
+    };
+    TaskListComponent.prototype.handleCompleteTask = function () {
+        this.refreshTaskList();
+        __WEBPACK_IMPORTED_MODULE_4_sweetalert2___default()({
+            type: 'success',
+            title: 'Task completed',
+            confirmButtonText: 'OK'
+        });
+        this.snacker.open('Task completed', 'Success', { duration: 3000 });
     };
     TaskListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({

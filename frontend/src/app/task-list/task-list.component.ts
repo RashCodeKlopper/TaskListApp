@@ -28,7 +28,9 @@ export class TaskListComponent implements OnInit {
 
   displayDialog: boolean;
 
-  statusVal: String = 'TODO';
+  // statusVal: String = 'TODO';
+
+  selectedTask: Task;
 
   ngOnInit() {
 
@@ -36,10 +38,11 @@ export class TaskListComponent implements OnInit {
 
     // Define table column names
     this.cols = [
+      { field: '', header: 'Do Task' },
       { field: 'description', header: 'Description' },
       { field: 'status', header: 'Status' },
-      { field: '', header: 'Edit' },
-      { field: '', header: 'Delete' },
+      { field: '', header: 'Edit Task' },
+      { field: '', header: 'Delete Task' },
     ];
   }
 
@@ -58,7 +61,7 @@ export class TaskListComponent implements OnInit {
   addTask(task) {
 
     // Add default value for status
-    task.status = this.statusVal;
+    // task.status = this.statusVal;
 
     this.http.post('/tasks/add', task)
       .subscribe(res => {
@@ -122,6 +125,26 @@ export class TaskListComponent implements OnInit {
       confirmButtonText: 'OK'
     });
     this.snacker.open('All Tasks deleted', 'Success', { duration: 3000 });
+  }
+
+  completeTask(id, task) {
+    this.http.put('/tasks/complete/' + id, task)
+      .subscribe(res => {
+          this.handleCompleteTask();
+        }, (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  handleCompleteTask() {
+    this.refreshTaskList();
+    swal({
+      type: 'success',
+      title: 'Task completed',
+      confirmButtonText: 'OK'
+    });
+    this.snacker.open('Task completed', 'Success', { duration: 3000 });
   }
 
 }

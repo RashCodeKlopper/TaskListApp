@@ -38,6 +38,10 @@ public class TaskService {
     public Task updateTask(Task task) {
         return taskRepository.save(task);
     }
+    
+    public void completeTask(Task task) {
+    	taskRepository.completeTask(task);
+    }
 
     public void deleteTaskById(Long id) {
         Optional<Task> foundtask = taskRepository.findById(id);

@@ -19,7 +19,7 @@
         </div>
     </ng-template>
 
-    <ng-template pTemplate="header" let-columns>
+    <ng-template pTemplate="header" let-columns style="align-content: center">
         <tr>
             <th *ngFor="let col of columns">
                 {{col.header}}
@@ -28,18 +28,24 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-task>
+
       <tr>
+
+        <td style="width: 10% ; text-align: center">
+            <button type="button" (click)="completeTask(task.id, task)" class="waves-effect waves-light btn"
+              style="width: 50px">
+              <i class="fa fa-check" aria-hidden="true" style="font-size: large"></i>
+            </button>
+          </td>
+
         <td style="width: 70% ; text-align: left">{{ task.description }}</td>
         <td style="width: 10% ; text-align: center">{{ task.status }}</td>
 
         <td style="width: 10% ; text-align: center">
           <button type="button" (click)="editTask(task.id, task)" class="waves-effect waves-light btn"
-            style="width: 50px ; padding-right: 20px">
+            style="width: 50px">
             <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
           </button>
-          <!-- <a [routerLink]="['/task-edit', task.id]">
-            <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
-          </a> -->
         </td>
 
         <td style="width: 10% ; text-align: center">
@@ -47,12 +53,16 @@
             style="width: 50px">
             <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
           </button>
-          <!-- <a [routerLink]="['/task-detail', task.id]">
-            <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
-          </a> -->
         </td>
       </tr>
     </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div style="text-align: left">
+            There are {{tasks.length}} tasks left
+        </div>
+    </ng-template>
+
   </p-table>
 
   <p-dialog header="Add Task" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
