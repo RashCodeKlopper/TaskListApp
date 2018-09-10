@@ -6,6 +6,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 
+import { TaskService } from '../app/services/task.service';
+
 // Imports for primeNG
 import {
   DataTableModule, SharedModule, ButtonModule, MessagesModule,
@@ -15,9 +17,7 @@ import {TableModule} from 'primeng/table';
 
 // Imports for Angular Components
 import { AppComponent } from './app.component';
-import { TaskDetailsComponent } from './task-details/task-details.component';
 import { TaskListComponent } from './task-list/task-list.component';
-import { TaskCreateComponent } from './task-create/task-create.component';
 import { TaskEditComponent } from './task-edit/task-edit.component';
 import { PageNotFoundComponent } from './error/pagenotfound.component';
 
@@ -26,16 +26,6 @@ const appRoutes: Routes = [
     path: 'tasks',
     component: TaskListComponent,
     data: { title: 'To-Do List' }
-  },
-  {
-    path: 'task-detail/:id',
-    component: TaskDetailsComponent,
-    data: { title: 'Task Details' }
-  },
-  {
-    path: 'task-create',
-    component: TaskCreateComponent,
-    data: { title: 'Create Contact' }
   },
   {
     path: 'task-edit/:id',
@@ -65,15 +55,13 @@ const appRoutes: Routes = [
   declarations: [
     // Angular Components
     AppComponent,
-    TaskCreateComponent,
-    TaskEditComponent,
-    TaskDetailsComponent,
     TaskListComponent,
-    TaskCreateComponent,
+    TaskEditComponent,
     TaskEditComponent,
     PageNotFoundComponent
   ],
   imports: [
+
     // Angular Modules
     BrowserModule,
     BrowserAnimationsModule,
@@ -99,7 +87,7 @@ const appRoutes: Routes = [
     )
 
   ],
-  providers: [],
+  providers: [TaskService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

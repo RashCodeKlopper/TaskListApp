@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/observable';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Task } from '../models/Task';
+import { TaskService } from '../services/task.service';
+import { Task } from '../models/task';
 import swal from 'sweetalert2';
 import { MatButtonModule, MatSnackBar } from '@angular/material';
 
@@ -15,10 +17,10 @@ export class TaskListComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private taskService: TaskService,
     private snacker: MatSnackBar
   ) { }
 
-  // variable to hold the data of the retrieved tasks
   tasks: any;
 
   // variable to hold the frontend table column names
@@ -27,8 +29,6 @@ export class TaskListComponent implements OnInit {
   task: any = {};
 
   displayDialog: boolean;
-
-  // statusVal: String = 'TODO';
 
   selectedTask: Task;
 
@@ -47,10 +47,11 @@ export class TaskListComponent implements OnInit {
   }
 
   refreshTaskList() {
-    // Retrieve all Tasks
-    this.http.get('/tasks').subscribe(data => {
-      this.tasks = data as Task[];
-    });
+    this.taskService.getTaskList()
+      .subscribe(data => {
+        this.tasks = data as Task[];
+      }
+    );
   }
 
   showAddDialog() {
@@ -59,14 +60,10 @@ export class TaskListComponent implements OnInit {
   }
 
   addTask(task) {
-
-    // Add default value for status
-    // task.status = this.statusVal;
-
-    this.http.post('/tasks/add', task)
-      .subscribe(res => {
-        this.displayDialog = false;
-        this.handleAdd();
+    this.taskService.addTask(this.task)
+        .subscribe(data => {
+          this.displayDialog = false;
+          this.handleAdd();
       }, (err) => {
         console.log(err);
       }
@@ -108,13 +105,30 @@ export class TaskListComponent implements OnInit {
   }
 
   deleteAllTasks() {
-    this.http.delete('/tasks/delete')
-    .subscribe(res => {
-        this.handleDeleteAll();
-      }, (err) => {
-        console.log(err);
+    swal({
+      type: 'warning',
+      title: 'Are you sure you want to delete ALL Tasks?',
+      showCancelButton: true,
+      confirmButtonColor: '#049F0C',
+      cancelButtonColor: '#ff0000',
+      confirmButtonText: 'YES',
+      cancelButtonText: 'NO'
+    }).then((result) => {
+      if (result.value) {
+        this.taskService.deleteAllTasks()
+          .subscribe(data => {
+            this.handleDeleteAll();
+          }, (err) => {
+            console.log(err);
+          });
+      } else {
+        swal({
+          type: 'info',
+          title: 'Your Tasks are safe',
+        });
+        this.snacker.open('Your Tasks are safe', 'Info', { duration: 3000 });
       }
-    );
+    });
   }
 
   handleDeleteAll() {

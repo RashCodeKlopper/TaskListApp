@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
-import { Task } from '../models/Task';
+import { TaskService } from '../services/task.service';
+import { Task } from '../models/task';
 import swal from 'sweetalert2';
-import { MatButtonModule, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -14,38 +15,47 @@ import { MatButtonModule, MatSnackBar } from '@angular/material';
 })
 export class TaskEditComponent implements OnInit {
 
+  // initialise tasks list
   tasks: any;
 
-  task = {};
+  // initialise Task model
+  task: Task;
 
   constructor(
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
+    private taskService: TaskService,
     private snacker: MatSnackBar
   ) { }
 
   ngOnInit() {
     this.getTask(this.route.snapshot.params['id']);
+    this.task = new Task();
   }
 
   refreshTaskList() {
-    // Retrieve all Tasks
-    this.http.get('/tasks').subscribe(data => {
-      this.tasks = data as Task[];
-    });
+    this.taskService.getTaskList()
+      .subscribe(data => {
+        this.tasks = data as Task[];
+      }
+    );
   }
 
-  getTask(id) {
-    this.http.get('/tasks/' + id).subscribe(data => {
-      this.task = data;
-    });
+  getTask(taskId) {
+    this.taskService.getTask(taskId)
+      .subscribe(data => {
+        this.task = data as Task;
+        }, (err) => {
+          console.log(err);
+        }
+      );
   }
 
-  updateTask(id, data) {
-    this.http.put('/tasks/' + id, data)
-      .subscribe(res => {
+  updateTask(taskId, task) {
+    this.taskService.updateTask(taskId, task)
+      .subscribe(data => {
           this.handleUpdate();
         }, (err) => {
           console.log(err);
@@ -64,10 +74,10 @@ export class TaskEditComponent implements OnInit {
     this.snacker.open('Task updated', 'Success', { duration: 3000 });
   }
 
-  deleteTask(id) {
-    this.http.delete('/tasks/' + id)
-      .subscribe(res => {
-          this.handleDelete();
+  deleteTask(taskId) {
+    this.taskService.deleteTask(taskId)
+      .subscribe(data => {
+        this.handleDelete();
         }, (err) => {
           console.log(err);
         }

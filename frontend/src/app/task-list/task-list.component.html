@@ -28,26 +28,21 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-task>
-
       <tr>
-
+        <td style="width: 70% ; text-align: left">{{ task.description }}</td>
+        <td style="width: 10% ; text-align: center">{{ task.status }}</td>
         <td style="width: 10% ; text-align: center">
             <button type="button" (click)="completeTask(task.id, task)" class="waves-effect waves-light btn"
               style="width: 50px">
               <i class="fa fa-check" aria-hidden="true" style="font-size: large"></i>
             </button>
-          </td>
-
-        <td style="width: 70% ; text-align: left">{{ task.description }}</td>
-        <td style="width: 10% ; text-align: center">{{ task.status }}</td>
-
+        </td>
         <td style="width: 10% ; text-align: center">
           <button type="button" (click)="editTask(task.id, task)" class="waves-effect waves-light btn"
             style="width: 50px">
             <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
           </button>
         </td>
-
         <td style="width: 10% ; text-align: center">
           <button type="button" (click)="deleteTask(task.id)" class="waves-effect waves-light btn"
             style="width: 50px">
