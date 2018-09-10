@@ -6,7 +6,7 @@ package com.rashied.tasklistapp.repositories;
 import com.rashied.tasklistapp.models.Task;
 
 /**
- * @author rashied
+ * @author mabdoelkariem
  *
  */
 public interface TaskRepositoryCustom {

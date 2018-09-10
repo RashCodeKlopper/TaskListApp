@@ -29,25 +29,25 @@
 
     <ng-template pTemplate="body" let-task>
       <tr>
-        <td style="width: 70% ; text-align: left">{{ task.description }}</td>
-        <td style="width: 10% ; text-align: center">{{ task.status }}</td>
-        <td style="width: 10% ; text-align: center">
+        <td style="text-align: left">{{ task.description }}</td>
+        <td style="text-align: center">{{ task.status }}</td>
+        <td style="text-align: center">
             <button type="button" (click)="completeTask(task.id, task)" class="waves-effect waves-light btn"
               style="width: 50px">
               <i class="fa fa-check" aria-hidden="true" style="font-size: large"></i>
             </button>
         </td>
-        <td style="width: 10% ; text-align: center">
-          <button type="button" (click)="editTask(task.id, task)" class="waves-effect waves-light btn"
-            style="width: 50px">
-            <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
-          </button>
+        <td style="text-align: center">
+            <button type="button" (click)="editTask(task.id, task)" class="waves-effect waves-light btn"
+              style="width: 50px">
+              <i class="fa fa-edit" aria-hidden="true" style="font-size: large"></i>
+            </button>
         </td>
-        <td style="width: 10% ; text-align: center">
-          <button type="button" (click)="deleteTask(task.id)" class="waves-effect waves-light btn"
-            style="width: 50px">
-            <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
-          </button>
+        <td style="text-align: center">
+            <button type="button" (click)="deleteTask(task.id)" class="waves-effect waves-light btn"
+              style="width: 50px">
+              <i class="fa fa-trash" aria-hidden="true" style="font-size: large"></i>
+            </button>
         </td>
       </tr>
     </ng-template>
@@ -62,7 +62,7 @@
 
   </p-table>
 
-  <p-dialog header="Add Task" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
+  <p-dialog header="Add / Update Task" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450">
       <div class="ui-g ui-fluid">
           <div class="ui-g-12">
               <div class="ui-g-4">
@@ -75,10 +75,10 @@
       </div>
       <p-footer>
           <div class="ui-dialog-buttonpane ui-helper-clearfix">
-            <button type="button" (click)="addTask(task)" class="waves-effect waves-light btn"
-              style="width: 110px ; padding-right: 20px">Save
-              <i class="fa fa-save" aria-hidden="true" style="font-size: large"></i>
-            </button>
+              <button type="button" (click)="saveTask(task)" class="waves-effect waves-light btn"
+                style="width: 110px ; padding-right: 20px">Save
+                <i class="fa fa-save" aria-hidden="true" style="font-size: large"></i>
+              </button>
           </div>
       </p-footer>
   </p-dialog>

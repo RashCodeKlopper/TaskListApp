@@ -4,6 +4,7 @@
 package com.rashied.tasklistapp.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +15,7 @@ import com.rashied.tasklistapp.models.Task;
 import com.rashied.tasklistapp.repositories.TaskRepository;
 
 /**
- * @author rashied
+ * @author mabdoelkariem
  *
  */
 @Service
@@ -33,9 +34,19 @@ public class TaskService {
     	// Lambda expression
     	tasksIterable.forEach(item -> taskList.add(item));
     	
-    	// Method reference
+    	// Method reference version
     	// taskRepository.findAll().forEach(taskList::add);
         
+    	// Sort the list by status 
+    	//taskList.sort( (Task t1, Task t2) -> t1.getStatus().compareTo(t2.getStatus()));
+    	
+    	// Shorter version
+    	// taskList.sort( ( t1, t2) -> t1.getStatus().compareTo(t2.getStatus()));
+    	
+    	// Sort the list by status (reversed order)
+    	Comparator<Task> statusComparator = (t1, t2) -> t1.getStatus().compareTo(t2.getStatus());
+    	taskList.sort(statusComparator.reversed());
+    	
         return taskList;
     }
 

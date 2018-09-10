@@ -47,11 +47,6 @@ ng build
 This command builds and copies the angular files into the 'src/main/resources/static' folder from the backend project
 
 
-# Important
-
-Execute the 'ng build' command prior to starting the backend server with the 'mvn spring-boot:run' command
-
-
 # What happens when the backend server is started
 
 - A .jar file containing the Java & Spring Boot code is deployed to the embedded Tomcat Server

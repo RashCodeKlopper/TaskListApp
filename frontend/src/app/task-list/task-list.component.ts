@@ -59,29 +59,53 @@ export class TaskListComponent implements OnInit {
     this.task = new Task();
   }
 
-  addTask(task) {
+  saveTask(task) {
     this.taskService.addTask(this.task)
         .subscribe(data => {
           this.displayDialog = false;
-          this.handleAdd();
+          this.handleSave();
       }, (err) => {
         console.log(err);
       }
     );
   }
 
-  handleAdd() {
+  handleSave() {
     this.refreshTaskList();
     swal({
       type: 'success',
-      title: 'Task added',
+      title: 'Task saved',
       confirmButtonText: 'OK'
     });
-    this.snacker.open('Task added', 'Success', { duration: 3000 });
+    this.snacker.open('Task saved', 'Success', { duration: 3000 });
   }
 
   editTask(taskId, task) {
-    this.router.navigate(['/task-edit', taskId, task]);
+    this.displayDialog = true;
+    this.task.id = taskId;
+    this.task = task;
+    // this.router.navigate(['/task-edit', taskId, task]);
+  }
+
+  updateTask(taskId, task) {
+    this.taskService.updateTask(taskId, task)
+      .subscribe(data => {
+          this.handleUpdate();
+        }, (err) => {
+          console.log(err);
+        }
+      );
+  }
+
+  handleUpdate() {
+    this.refreshTaskList();
+    this.router.navigate(['/tasks']);
+    swal({
+      type: 'success',
+      title: 'Task updated',
+      confirmButtonText: 'OK'
+    });
+    this.snacker.open('Task updated', 'Success', { duration: 3000 });
   }
 
   deleteTask(id) {
